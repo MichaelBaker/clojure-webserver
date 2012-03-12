@@ -1,6 +1,6 @@
-(ns clojure-webserver.core)
-
-(use 'clojure.tools.cli)
+(ns clojure-webserver.core
+  (:use clojure.tools.cli)
+  (:gen-class))
 
 (defn -main [& args]
   (println (cli args
