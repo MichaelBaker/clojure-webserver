@@ -42,7 +42,7 @@
     (fn [string]
       (let [match (re-find pattern string)]
         (if match
-          {:matches [match] :remaining (string/replace-first match string "") :success true}
+          {:matches [match] :remaining (string/replace-first string match "") :success true}
           {:matches [] :remaining string :success false})))))
 
 (def lowercase-character (regex-parser #"[a-z]"))
