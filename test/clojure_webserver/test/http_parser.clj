@@ -28,12 +28,13 @@
          "%ff"
          "%0A"
          "%A5")))
-(comment testing "URI"
+
+(testing "URI"
   (are [path] (:success (uri path))
        "/rfc/rfc1808.txt"
        "/00/Weather/California/Los%20Angeles"
        "/faq/compression-faq/part1.html"))
 
-(comment testing "Request Line"
+(testing "Request Line"
   (are [line expected] (= expected (:matches (request-line line)))
        "GET / HTTP/1.1\r\n" ["GET" "/" "HTTP/1.1"]))

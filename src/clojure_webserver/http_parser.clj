@@ -63,11 +63,39 @@
     (word-parser "(")
     (word-parser ")")))
 
+(def unreserved (choice alpha-numeric mark))
+
+
+(def pchar
+  (choice
+    unreserved
+    escaped
+    (word-parser ":")
+    (word-parser "@")
+    (word-parser "&")
+    (word-parser "=")
+    (word-parser "+")
+    (word-parser "$")
+    (word-parser ",")))
+
+(def param (many pchar))
+
+(def segment (>> param
+                 (many (>> (word-parser ";")
+                           param))))
+
+(def path-segments (>> segment
+                       (many (>> slash
+                                 segment))))
+
+(def abs-path (>> slash path-segments))
+
 (def uri
-  (word-parser "Hello"))
+  (join abs-path))
 
 (def ignore-space (ignore space))
 
 (def request-line
   (>> request-method
-      ignore-space))
+      ignore-space
+      uri))
