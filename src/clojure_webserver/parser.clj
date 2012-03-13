@@ -51,3 +51,14 @@
 (def uppercase-character (regex-parser #"[A-Z]"))
 (def digit (regex-parser #"[0-9]"))
 (def alpha-numeric (choice lowercase-character uppercase-character digit))
+
+(defn many [parser]
+  (defn repeat-parser [string result]
+    (let [{:keys [matches remaining success]} (parser string)
+          {previous :matches} result]
+      (if success
+        (recur remaining {:matches (into previous matches)
+                          :remaining remaining
+                          :success true})
+        result)))
+  (fn [string] (repeat-parser string {:matches [] :remaining string :success true})))

@@ -45,3 +45,14 @@
   (deftest matches-any-uppercase-english-character
     (are [c] (:success (uppercase-character c))
          "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z")))
+
+(testing "many"
+  (deftest matches-zero-or-more-occurances-of-the-letter
+    (let [parser (many (word-parser "a"))]
+      (is (= ["a" "a" "a"] (:matches (parser "aaa"))))))
+  (deftest matches-zero-or-more-occurances-of-the-choice
+    (let [parser (many (choice (word-parser "a") (word-parser "b")))]
+      (is (= ["a" "b" "b" "b"] (:matches (parser "abbbc"))))))
+  (deftest matches-zero-or-more-occurances-of-the-sequence
+    (let [parser (many (>> (word-parser "a") (word-parser "b")))]
+      (is (= ["a" "b" "a" "b"] (:matches (parser "ababba")))))))
