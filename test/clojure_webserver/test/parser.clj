@@ -56,3 +56,11 @@
   (deftest matches-zero-or-more-occurances-of-the-sequence
     (let [parser (many (>> (word-parser "a") (word-parser "b")))]
       (is (= ["a" "b" "a" "b"] (:matches (parser "ababba")))))))
+
+(testing "join"
+  (deftest concatenates-the-result-of-a-parser
+    (let [parser (join (>> (word-parser "a") (word-parser "b")))]
+      (is (= ["ab"] (:matches (parser "ab"))))))
+  (deftest works-for-failed-matches
+    (let [parser (join (word-parser "a"))]
+      (is (= {:matches [] :remaining "b" :success false} (parser "b"))))))

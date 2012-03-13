@@ -21,7 +21,6 @@
 
 (testing "slash"
   (is (:success (slash "/"))))
-
 (comment testing "URI"
   (are [path] (:success (uri path))
        "/rfc/rfc1808.txt"

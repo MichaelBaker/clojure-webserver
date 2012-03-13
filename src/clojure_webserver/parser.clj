@@ -62,3 +62,10 @@
                           :success true})
         result)))
   (fn [string] (repeat-parser string {:matches [] :remaining string :success true})))
+
+(defn join [parser]
+  (fn [string]
+    (let [{:keys [matches success] :as result} (parser string)]
+      (if success
+        (assoc result :matches [(apply str matches)])
+        result))))
