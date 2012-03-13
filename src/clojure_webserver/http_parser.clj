@@ -33,6 +33,18 @@
 ;            "8" | "9"
 (def slash (word-parser "/"))
 
+(def mark
+  (choice
+    (word-parser "-")
+    (word-parser "_")
+    (word-parser ".")
+    (word-parser "!")
+    (word-parser "~")
+    (word-parser "*")
+    (word-parser "'")
+    (word-parser "(")
+    (word-parser ")")))
+
 (def uri
   (word-parser "Hello"))
 
