@@ -1,18 +1,17 @@
 (ns clojure-webserver.parser
-  (:use [clojure.string :only [replace-first]]))
+  (:require [clojure.string :as string]))
+
+; This is not technically a parser given the below definition
+(defn -match-character [c]
+  (fn [string]
+    (if (= (first string) c)
+      {:matches [(str (first string))] :remaining (string/join "" (rest string)) :success true}
+      {:matches [] :remaining string :success false})))
 
 ; Parsers are functions of the form String -> {:matches [String] :remaining String :success Boolean}
 ; where :matches   is a list containing the matched token
 ;       :remaining is the rest of the input string
 ;       :success   is whether or not the parse was successful
-(defn word-parser [re]
-  (let [pattern (re-pattern (str "^" re))]
-    (fn [string]
-      (let [match (re-find pattern string)]
-        (if match
-          {:matches [match] :remaining (replace-first string match "") :success true}
-          {:matches [] :remaining string :success false})))))
-
 (defn choice [& parsers]
   (defn try-parsers [string ps]
     (if (seq ps)
@@ -35,7 +34,6 @@
       final-result))
   (fn [string] (try-sequence string string parsers {:matches [] :remaining string :success true})))
 
-(def space (word-parser " "))
 (defn ignore [parser]
   (fn [string] (assoc (parser string) :matches [])))
 
@@ -44,7 +42,7 @@
     (fn [string]
       (let [match (re-find pattern string)]
         (if match
-          {:matches [match] :remaining (replace-first match string "") :success true}
+          {:matches [match] :remaining (string/replace-first match string "") :success true}
           {:matches [] :remaining string :success false})))))
 
 (def lowercase-character (regex-parser #"[a-z]"))
@@ -69,3 +67,8 @@
       (if success
         (assoc result :matches [(apply str matches)])
         result))))
+
+(defn word-parser [word]
+  (join (apply >> (map -match-character (seq word)))))
+
+(def space (word-parser " "))
