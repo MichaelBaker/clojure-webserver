@@ -31,3 +31,17 @@
     (let [parser (ignore (word-parser "te"))]
       (is (= {:matches [] :remaining "st" :success true} (parser "test"))))))
 
+(testing "digit"
+  (deftest matches-any-digit
+    (are [d] (:success (digit d))
+         "0" "1" "2" "3" "4" "5" "6" "7" "8" "9")))
+
+(testing "lowercase-character"
+  (deftest matches-any-lowercase-english-character
+    (are [c] (:success (lowercase-character c))
+         "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z")))
+
+(testing "uppercase-character"
+  (deftest matches-any-uppercase-english-character
+    (are [c] (:success (uppercase-character c))
+         "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z")))

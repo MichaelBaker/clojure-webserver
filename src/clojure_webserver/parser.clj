@@ -38,5 +38,16 @@
 (def space (word-parser " "))
 (defn ignore [parser]
   (fn [string] (assoc (parser string) :matches [])))
-(def ignore-space (ignore space))
 
+(defn regex-parser [re]
+  (let [pattern (re-pattern (str "^" re))]
+    (fn [string]
+      (let [match (re-find pattern string)]
+        (if match
+          {:matches [match] :remaining (replace-first match string "") :success true}
+          {:matches [] :remaining string :success false})))))
+
+(def lowercase-character (regex-parser #"[a-z]"))
+(def uppercase-character (regex-parser #"[A-Z]"))
+(def digit (regex-parser #"[0-9]"))
+(def alpha-numeric (choice lowercase-character uppercase-character digit))
