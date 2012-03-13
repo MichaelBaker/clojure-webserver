@@ -21,6 +21,13 @@
 
 (testing "slash"
   (is (:success (slash "/"))))
+
+(testing "escaped character"
+  (deftest matches-characters-escaped-as-hexadecimal
+    (are [string] (= [string] (:matches (escaped string)))
+         "%ff"
+         "%0A"
+         "%A5")))
 (comment testing "URI"
   (are [path] (:success (uri path))
        "/rfc/rfc1808.txt"

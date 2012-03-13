@@ -33,6 +33,24 @@
 ;            "8" | "9"
 (def slash (word-parser "/"))
 
+(def hex
+  (choice
+    digit
+    (word-parser "A")
+    (word-parser "B")
+    (word-parser "C")
+    (word-parser "D")
+    (word-parser "E")
+    (word-parser "F")
+    (word-parser "a")
+    (word-parser "b")
+    (word-parser "c")
+    (word-parser "d")
+    (word-parser "e")
+    (word-parser "f")))
+
+(def escaped (join (>> (word-parser "%") hex hex)))
+
 (def mark
   (choice
     (word-parser "-")
