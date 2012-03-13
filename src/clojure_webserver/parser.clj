@@ -40,16 +40,3 @@
   (fn [string] (assoc (parser string) :matches [])))
 (def ignore-space (ignore space))
 
-(def request-method
-  (choice (word-parser "OPTIONS")
-          (word-parser "GET")
-          (word-parser "HEAD")
-          (word-parser "POST")
-          (word-parser "PUT")
-          (word-parser "DELETE")
-          (word-parser "TRACE")
-          (word-parser "CONNECT")))
-
-(def request-line
-  (>> request-method
-      ignore-space))

@@ -26,28 +26,8 @@
   (deftest matches-the-space-character
     (is (= [" "] (:matches (space " "))))))
 
-(testing "Request methods"
-  (deftest acceptable-methods
-    (are [method] (= [method] (:matches (request-method method)))
-         "OPTIONS"
-         "GET"
-         "HEAD"
-         "POST"
-         "PUT"
-         "DELETE"
-         "TRACE"
-         "CONNECT")))
-  (deftest bogus-methods
-    (are [method] (= [] (:matches (request-method method)))
-         "thingy"
-         "this is bogus"
-         ""))
-
 (testing "Ignore"
   (deftest it-returns-success-and-consumes-token-but-no-matches
     (let [parser (ignore (word-parser "te"))]
       (is (= {:matches [] :remaining "st" :success true} (parser "test"))))))
 
-(testing "Request Line"
-  (are [line expected] (= expected (:matches (request-line line)))
-       "GET / HTTP/1.1\r\n" ["GET" "/" "HTTP/1.1"]))
