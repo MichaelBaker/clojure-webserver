@@ -14,10 +14,16 @@
     (join "\n" (map (partial -relative-path file) (file-seq file)))
     (slurp file)))
 
+(defn -remaining-files [files]
+  (let [file (first files)]
+    (if (.isDirectory file)
+      (into (rest files) (remove #(= file %) (file-seq file)))
+      (rest files))))
+
 (defn -create-filename-map [root]
   ((fn [files filename-map]
      (if (seq files)
-       (recur (rest files)
+       (recur (-remaining-files files)
               (assoc filename-map
                      (-relative-path root (first files))
                      (-reponse (first files))))

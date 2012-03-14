@@ -9,6 +9,7 @@
     (let [input  (.getInputStream socket)
           output (PrintWriter. (.getOutputStream socket))
           env    (parse-request (reader input))]
+      (.print output "HTTP/1.1 200 OK\r\n\r\n")
       (.print output (:body (request-handler env)))
       (.flush output)
       (.close input)
