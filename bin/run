@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd $(dirname $0)
+cd ..
+java -jar clojure-webserver-1.0.0-SNAPSHOT-standalone.jar $@
