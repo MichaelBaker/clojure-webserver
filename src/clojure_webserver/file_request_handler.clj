@@ -31,4 +31,7 @@
 
 (defn file-request-handler [root]
   (def filename-map (-create-filename-map root))
-  (fn [env] {:status 200 :headers {} :body (filename-map (env :uri))}))
+  (fn [env]
+    (if (filename-map (:uri env))
+      {:status 200 :headers {} :body (filename-map (env :uri))}
+      {:status 404 :headers {} :body ""})))

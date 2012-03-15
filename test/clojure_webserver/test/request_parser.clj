@@ -1,9 +1,10 @@
 (ns clojure-webserver.test.request-parser
+  (:import java.io.StringReader)
   (:use clojure.test)
   (:use clojure-webserver.request-parser))
 
 (deftest get-root
-  (def request "GET / HTTP/1.1\r\n")
+  (def request (StringReader. "GET / HTTP/1.1\r\n)"))
   (let [{:keys [method uri version]} (parse-request request)]
     (is (= "GET"      method))
     (is (= "/"        uri))

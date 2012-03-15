@@ -1,4 +1,5 @@
 (ns clojure-webserver.request-parser
+  (:import java.io.BufferedReader)
   (:use [clojure.string :only [split-lines split]]))
 
 (defn -get-request-line [{[line & rest] :remaining}]
@@ -8,7 +9,8 @@
 (defn -get-headers [request]
   (dissoc request :remaining))
 
-(defn parse-request [string]
-  (-> {:remaining (line-seq string)}
-      (-get-request-line)
-      (-get-headers)))
+(defn parse-request [reader]
+  (let [input (line-seq (BufferedReader. reader))]
+    (-> {:remaining input}
+        (-get-request-line)
+        (-get-headers))))

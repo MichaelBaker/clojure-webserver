@@ -8,10 +8,15 @@
 (def file1-name (.getName (File/createTempFile "temp" (time-string) root)))
 (def file2-name (.getName (File/createTempFile "temp" (time-string) root)))
 
-(deftest get-directory-contents
-  (let [handler  (file-request-handler root)
-        {:keys [status body headers]} (handler {:uri "/"})]
-    (is (= 200 status))
-    (is (= {}  headers))
-    (is (.contains body file1-name))
-    (is (.contains body file2-name))))
+(testing "file-request-handler"
+  (def handler (file-request-handler root))
+  (deftest get-directory-contents
+    (let [{:keys [status body headers]} (handler {:uri "/"})]
+      (is (= 200 status))
+      (is (= {}  headers))
+      (is (.contains body file1-name))
+      (is (.contains body file2-name))))
+
+  (deftest file-does-not-exist
+    (let [{:keys [status body headers]} (handler {:uri "/file3"})]
+      (is (= 404 status)))))
