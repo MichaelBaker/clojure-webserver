@@ -1,7 +1,7 @@
 (ns clojure-webserver.http-handler
   (:import java.io.PrintWriter)
   (:use [clojure.java.io :only [reader]])
-  (:use [clojure.string :only [trim]])
+  (:use [clojure.string  :only [trim]])
   (:use clojure-webserver.request-parser))
 
 (def status-code-phrases
@@ -20,7 +20,7 @@
 (defn http-handler [socket request-handler]
   (fn []
     (let [input  (.getInputStream socket)
-          output (PrintWriter. (.getOutputStream socket))
+          output (PrintWriter.  (.getOutputStream socket))
           env    (parse-request (reader input))
           {:keys [status headers body]} (request-handler env)]
       (doto output
