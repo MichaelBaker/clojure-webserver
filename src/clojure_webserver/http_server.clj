@@ -4,7 +4,7 @@
   (:use clojure-webserver.http-handler))
 
 (defn -accept-connection [server request-handler]
-  (let [thread-pool (Executors/newFixedThreadPool 4)]
+  (let [thread-pool (Executors/newFixedThreadPool 10)]
     (while true (.execute thread-pool
                           (http-handler (.accept server)
                                         request-handler)))))
