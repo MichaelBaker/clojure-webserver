@@ -29,9 +29,20 @@
                      (-reponse (first files))))
        filename-map)) [root] {}))
 
+(defn -get-handler [env, filename-map]
+  (if (filename-map (:uri env))
+      {:status 200 :headers {} :body (filename-map (env :uri))}
+      {:status 404 :headers {} :body ""}))
+
+(defn -post-handler []
+  {:status 200 :headers {} :body ""})
+
+(defn -put-handler []
+  {:status 200 :headers {} :body ""})
+
 (defn request-handler [root]
   (def filename-map (-create-filename-map root))
-  (fn [env]
-    (if (filename-map (:uri env))
-      {:status 200 :headers {} :body (filename-map (env :uri))}
-      {:status 404 :headers {} :body ""})))
+  (fn [env] (cond
+    (= "GET"  (:method env)) (-get-handler env filename-map)
+    (= "POST" (:method env)) (-post-handler)
+    (= "PUT"  (:method env)) (-put-handler))))
