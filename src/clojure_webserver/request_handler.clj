@@ -1,4 +1,4 @@
-(ns clojure-webserver.file-request-handler
+(ns clojure-webserver.request-handler
   (:use [clojure.string :only [replace-first join]]))
 
 (defn -relative-path [root file]
@@ -29,7 +29,7 @@
                      (-reponse (first files))))
        filename-map)) [root] {}))
 
-(defn file-request-handler [root]
+(defn request-handler [root]
   (def filename-map (-create-filename-map root))
   (fn [env]
     (if (filename-map (:uri env))

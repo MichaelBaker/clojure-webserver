@@ -23,10 +23,9 @@
           output (PrintWriter. (.getOutputStream socket))
           env    (parse-request (reader input))
           {:keys [status headers body]} (request-handler env)]
-      (.print output (status-line status))
-      (.print output crlf)
-      (.print output body)
-      (.flush output)
-      (.close input)
-      (.close output)
-      (.close socket))))
+      (.. output
+        (print (status-line status))
+        (print crlf)
+        (print body)
+        (flush))
+      (doseq [stream [input output socket]] (.close stream)))))

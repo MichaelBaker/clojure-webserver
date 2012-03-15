@@ -3,7 +3,7 @@
   (:use [clojure.java.io :only [file]])
   (:use clojure.tools.cli)
   (:use clojure-webserver.http-handler)
-  (:use clojure-webserver.file-request-handler)
+  (:use clojure-webserver.request-handler)
   (:gen-class))
 
 (def handler)
@@ -24,5 +24,5 @@
   (let [[switches remaining usage] (cli args
        ["-p" "--port" "Start the server on this port." :parse-fn #(Integer. %) :default 5000]
        ["-d" "--directory" "The directory from which files will be served." :default "public"])]
-    (def handler (file-request-handler (file (switches :directory))))
+    (def handler (request-handler (file (switches :directory))))
     (start-server (switches :port))))
