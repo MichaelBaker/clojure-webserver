@@ -2,9 +2,9 @@
   (:import java.net.ServerSocket)
   (:import java.util.concurrent.Executors)
   (:use [clojure.java.io :only [file]])
-  (:use clojure.tools.cli)
   (:use clojure-webserver.http-handler)
   (:use clojure-webserver.request-handler)
+  (:use clojure-webserver.option-parser)
   (:gen-class))
 
 (defn accept-connection [server request-handler]
@@ -19,9 +19,7 @@
   (accept-connection (ServerSocket. port) request-handler))
 
 (defn -main [& args]
-  (let [[switches remaining usage] (cli args
-        ["-p" "--port" "Start the server on this port." :parse-fn #(Integer. %) :default 5000]
-        ["-d" "--directory" "The directory from which files will be served." :default "public"])
+  (let [[switches remaining usage] (parse-options args)
         handler (request-handler (file (switches :directory)))
         port    (switches :port)]
     (start-server port handler)))
