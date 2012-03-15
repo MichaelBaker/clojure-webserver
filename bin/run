@@ -2,4 +2,4 @@
 
 cd $(dirname $0)
 cd ..
-java -jar clojure-webserver-1.0.0-SNAPSHOT-standalone.jar $@
+java -jar dist/clojure-webserver-1.0.0-SNAPSHOT-standalone.jar $@
