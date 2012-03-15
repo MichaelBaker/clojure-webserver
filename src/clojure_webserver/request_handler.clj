@@ -11,7 +11,7 @@
 
 (defn -reponse [file]
   (if (.isDirectory file)
-    (join "\n" (map (partial -relative-path file) (file-seq file)))
+    (join "\n" (map #(-relative-path file %) (file-seq file)))
     (slurp file)))
 
 (defn -remaining-files [files]
@@ -41,8 +41,8 @@
   {:status 200 :headers {} :body ""})
 
 (defn request-handler [root]
-  (def filename-map (-create-filename-map root))
-  (fn [env] (cond
-    (= "GET"  (:method env)) (-get-handler env filename-map)
-    (= "POST" (:method env)) (-post-handler)
-    (= "PUT"  (:method env)) (-put-handler))))
+  (let [filename-map (-create-filename-map root)]
+    (fn [env] (cond
+      (= "GET"  (:method env)) (-get-handler env filename-map)
+      (= "POST" (:method env)) (-post-handler)
+      (= "PUT"  (:method env)) (-put-handler)))))
