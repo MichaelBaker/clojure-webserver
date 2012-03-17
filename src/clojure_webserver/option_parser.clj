@@ -14,5 +14,6 @@
      :default "public"]))
 
 (defn parse-options [args]
+  "Takes a vector of strings and returns a map of switches and their values."
   (let [[{:keys [directory port]}] (-parse-args args)]
     [directory port]))

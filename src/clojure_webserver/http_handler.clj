@@ -17,7 +17,9 @@
        (status-code-phrases status-code)
        crlf))
 
-(defn http-handler [socket request-handler]
+(defn http-handler
+  "Reads a request from the given socket, invokes the given handler, and returns the response."
+  [socket request-handler]
   (fn []
     (let [input  (.getInputStream socket)
           output (PrintWriter.  (.getOutputStream socket))

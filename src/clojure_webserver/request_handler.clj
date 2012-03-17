@@ -40,7 +40,10 @@
 (defn -put-handler []
   {:status 200 :headers {} :body ""})
 
-(defn request-handler [root]
+(defn request-handler
+  "Takes a directory and returns a function that acts as a request handler for serving static files from that directory.
+  The returned function takes a map of request parameters and returns a map containing the status, headers, and body of the response."
+  [root]
   (let [filename-map (-create-filename-map root)]
     (fn [env] (cond
       (= "GET"  (:method env)) (-get-handler env filename-map)

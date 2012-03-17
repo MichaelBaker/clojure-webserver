@@ -5,7 +5,8 @@
 
 (defn -accept-connection [server request-handler]
   (let [thread-pool (Executors/newFixedThreadPool 10)]
-    (while true (.execute thread-pool
+    (while true
+      (.execute thread-pool
                           (http-handler (.accept server)
                                         request-handler)))))
 
@@ -14,6 +15,7 @@
         (.setReuseAddress true)))
 
 (defn start-server
+  "Listens on the given port and spawns request handlers for each incoming request."
   ([port request-handler]
     (start-server port request-handler (fn [server])))
   ([port request-handler start-callback]
